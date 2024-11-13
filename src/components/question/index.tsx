@@ -22,9 +22,17 @@ export function QuestionSection({ currentUrl }: { currentUrl: string }) {
     useEffect(() => {
         checkIfExists();
     }, [])
+
+    function renderAddQuestion() {
+        return <AddQuestion currentUrl={currentUrl} setExistingQuestion={setExistingQuestion} />;
+    }
+
+    function renderEditQuestion() {
+        return <EditQuestion existingQuestion={existingQuestion} setExistingQuestion={setExistingQuestion} />;
+    }
+
     return <Paper className="question" elevation={3}>
         {loading ? <CircularProgress /> :
-            existingQuestion ? <EditQuestion existingQuestion={existingQuestion} setExistingQuestion={setExistingQuestion} /> :
-                <AddQuestion setExistingQuestion={setExistingQuestion} />}
+            existingQuestion ? renderEditQuestion() : renderAddQuestion()}
     </Paper>
 }

@@ -7,7 +7,8 @@ import { Question } from '@src/types';
 import { useAPIService } from '@src/services';
 
 export type PropTypes = {
-    existingQuestion?: Question,
+    currentUrl?: string
+    existingQuestion?: Question
     setExistingQuestion: (question: Question) => void
 }
 

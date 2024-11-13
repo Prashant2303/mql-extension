@@ -102,9 +102,7 @@ export function EditQuestion({ existingQuestion }: PropTypes) {
             // disabled={loading}
             />
         </Grid2>
-        <Grid2 size={10}>
-        </Grid2>
-        <Grid2 size={2}>
+        <Grid2 container size={12} justifyContent="flex-end">
             <LoadingButton
                 loading={false}
                 variant="contained"
