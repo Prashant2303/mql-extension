@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { Grid2 as Grid, TextField, Typography } from '@mui/material';
+import { useContext, useRef, useState } from 'react';
+import { Grid2, MenuItem, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { UserContext } from '@src/App';
-import { categories, difficulties, statuses } from '@src/constants';
+import { fields } from '@src/constants';
 import { Question } from '@src/types';
 import { useAPIService } from '@src/services';
 
@@ -13,137 +13,79 @@ export type PropTypes = {
 }
 
 export function AddQuestion(props: PropTypes) {
-    const user = useContext(UserContext);
+    const { currentUrl, setExistingQuestion } = props;
     const { addQuestion } = useAPIService();
+    const user = useContext(UserContext);
+    const notesRef = useRef(null);
+
+    const url = new URL(currentUrl);
 
     const initialState = {
         'id': '',
         'date': '',
-        'url': '',
-        'site': '',
-        'name': '',
+        'url': url.href,
+        'site': url.hostname,
+        'name': parseName(url),
         'difficulty': user?.defaultDifficulty,
         'status': user?.defaultStatus,
         'category': user?.defaultCategory,
         'notes': ''
     };
 
-    const initialErrors = {
-        'url': '',
-        'name': ''
-    };
-
     const [state, setState] = useState<Question>(initialState);
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState(initialErrors);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    async function getTab() {
-        const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-        const url = new URL(tab.url);
-        console.log('URL', url);
-        const newState = {
-            ...state,
-            url: url.href,
-            site: url.hostname,
-            name: parseName(url)
-        };
-        setState(newState);
-    }
+    function handleChange(e) {
+        console.dir(e.target);
+        const field = e.target.name;
+        const value = e.target.value;
 
-    useEffect(() => {
-        getTab();
-    }, [])
-
-    const parseName = (url) => {
-        const site = url.hostname;
-        let name;
-        if (site === "leetcode.com") {
-            name = url.pathname.substring(10)
-            name = (name[0].toUpperCase() + name.substring(1)).replaceAll('-', ' ');
-        } else {
-            console.log('NO LC OR GFG', url);
-            name = url;
+        if (field === 'name') {
+            setError('');
+            if (value.trim() === '')
+                setError('Required');
+            if (value.trim().length > 100)
+                setError('Must be less than 100 characters');
         }
-        return name;
+        setState({ ...state, [field]: value });
     }
 
-    const handleUrlChange = (e) => {
-        setErrors({ url: '', name: '' })
-        try {
-            const urlObject = new URL(e.target.value);
-            const url = urlObject.href;
-            const site = urlObject.hostname;
-            const name = parseName(urlObject);
-            setState({
-                ...state,
-                url,
-                name,
-                site
-            });
-        } catch (err) {
-            console.log(err);
-            setState({
-                ...state,
-                url: e.target.value
-            })
-            setErrors({ ...errors, url: 'Invalid URL' })
-        }
-    }
-
-    const handleChange = (e) => {
-        if (e.target.name === 'name') {
-            setErrors({ ...errors, name: '' })
-            if (e.target.value.trim() === '')
-                setErrors({ ...errors, name: 'Required' })
-            if (e.target.value.trim().length > 100)
-                setErrors({ ...errors, name: 'Must be less than 100 characters' })
-        }
-        setState({ ...state, [e.target.name]: e.target.value });
-    }
-
-    const handleEnter = (e) => {
+    function handleEnter(e) {
         if (e.key === 'Enter') {
-            handleSubmit();
+            notesRef.current.focus();
         }
     }
 
-    const handleSubmit = async () => {
-        if (!state.url.length || !state.name.length) {
-            if (state.name.length) {
-                setErrors({ ...errors, url: 'Required' })
-            } else if (state.url.length) {
-                setErrors({ ...errors, name: 'Required' })
-            } else {
-                setErrors({ url: 'Required', name: 'Required' })
-            }
+    async function handleSubmit() {
+        if (!state.name.length) {
+            setError('Required');
         } else {
             setLoading(true);
             const res = await addQuestion(state);
-            props.setExistingQuestion(res);
+            setExistingQuestion(res);
             setLoading(false);
         }
     }
 
-    return <Grid container spacing={2}>
-        <Grid size={6}>
+    return <Grid2 container spacing={2}>
+        <Grid2 size={12}>
             <TextField
                 id="url"
-                name="url"
-                label="URL"
+                label="URL (Not editable)"
                 variant="outlined"
-                placeholder="e.g - https://leetcode.com/problems/basic-calculator-ii/"
                 fullWidth
                 value={state.url}
-                onChange={handleUrlChange}
-                onKeyUp={handleEnter}
                 required
                 size="small"
-                error={!!errors.url}
-                helperText={errors.url}
-                disabled={loading}
+                slotProps={{
+                    input: {
+                        readOnly: true
+                    }
+                }}
             />
-        </Grid>
-        <Grid size={6}>
+        </Grid2>
+        <Grid2 size={12}>
             <TextField
                 id="name"
                 name="name"
@@ -155,86 +97,32 @@ export function AddQuestion(props: PropTypes) {
                 onKeyUp={handleEnter}
                 required
                 size="small"
-                error={!!errors.name}
-                helperText={errors.name}
+                error={!!error}
+                helperText={error}
                 disabled={loading}
             />
-        </Grid>
-        <Grid size={4}>
+        </Grid2>
+        {fields.map(field => <Grid2 size={4}>
             <TextField
+                id={field.name}
+                name={field.name}
                 select
-                id="difficulty"
-                label="Difficulty"
-                value={state.difficulty}
+                label={capitalizeFirst(field.name)}
+                value={state[field.name]}
                 onChange={handleChange}
                 fullWidth
                 required
                 size="small"
                 disabled={loading}
-                slotProps={{
-                    select: {
-                        native: true,
-                    },
-                }}
             >
-                {difficulties.map((option) => (
-                    <option id={option} key={option} value={option}>
+                {field.options.map(option => (
+                    <MenuItem id={option} key={option} value={option}>
                         {option}
-                    </option>
+                    </MenuItem>
                 ))}
             </TextField>
-        </Grid>
-        <Grid size={4}>
-            <TextField
-                select
-                id="status"
-                name="status"
-                label="Status"
-                value={state.status}
-                onChange={handleChange}
-                fullWidth
-                required
-                size="small"
-                disabled={loading}
-                slotProps={{
-                    select: {
-                        native: true,
-                    },
-                }}
-            >
-                {statuses.map((option) => (
-                    <option id={option} key={option} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </TextField>
-        </Grid>
-        <Grid size={4}>
-            <TextField
-                id="category"
-                name="category"
-                select
-                label="Category"
-                value={state.category}
-                onChange={handleChange}
-                fullWidth
-                required
-                size="small"
-                disabled={loading}
-                slotProps={{
-                    select: {
-                        native: true,
-                    },
-                }}
-            >
-                {categories.sort().map((option) => (
-                    <option id={option} key={option} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </TextField>
-        </Grid>
-        <Grid size={12}>
+        </Grid2>)}
+        <Grid2 size={12}>
             <TextField
                 id="notes"
                 name="notes"
@@ -246,23 +134,41 @@ export function AddQuestion(props: PropTypes) {
                 fullWidth
                 size="small"
                 disabled={loading}
+                inputRef={notesRef}
             />
-        </Grid>
-        <Grid size={12} >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography component="i">
-                    * Will be added to the default list
-                </Typography>
-                <LoadingButton
-                    loading={loading}
-                    variant="contained"
-                    disableElevation
-                    type="submit"
-                    onClick={handleSubmit}
-                >
-                    Add Question
-                </LoadingButton>
-            </div>
-        </Grid>
-    </Grid>
+        </Grid2>
+        <Grid2
+            size={12}
+            container
+            justifyContent="space-between"
+            alignItems="center"
+        >
+            <Typography component="i">
+                * Will be added to the default list
+            </Typography>
+            <LoadingButton
+                loading={loading}
+                variant="contained"
+                disableElevation
+                type="submit"
+                onClick={handleSubmit}
+            >
+                Add Question
+            </LoadingButton>
+        </Grid2>
+    </Grid2>
+}
+
+const parseName = (url: URL): string => {
+    let name;
+    if (url.hostname === "leetcode.com") {
+        name = url.pathname.substring(10);
+        return (name[0].toUpperCase() + name.substring(1, name.length - 13)).replaceAll('-', ' ');
+    } else {
+        return '';
+    }
+}
+
+function capitalizeFirst(str: string): string {
+    return str[0].toUpperCase() + str.substring(1);
 }
