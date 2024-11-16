@@ -5,7 +5,7 @@ import { UserContext } from '@src/App';
 import { fields } from '@src/constants';
 import { Question } from '@src/types';
 import { useAPIService } from '@src/services';
-import { parseName } from '@src/components/utils';
+import { parseName } from '@src/utils';
 
 export type PropTypes = {
     currentUrl?: string
