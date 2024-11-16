@@ -43,8 +43,25 @@ export function useAPIService() {
             console.log('Data', data);
             return data;
         },
-        updateQuestion: async (props) => {
-            console.log(props);
+        updateQuestion: async (questionId, field, value): Promise<boolean> => {
+            console.log(questionId, field, value);
+            // const response = await fetch(base_url + `/api/questions/${user.defaultList}/${questionId}`, {
+            //     method: 'PATCH',
+            //     body: JSON.stringify({
+            //         [field]: value
+            //     }),
+            //     headers: myHeaders,
+            // })
+            // if (response.ok) {
+            //     // toast.success('Updated Successfully');
+            //     return true;
+            // }
+            // // toast.error('Something went wrong');
+            // return false;
+            return true;
+        },
+        deleteQuestion: async (params) => {
+            console.log(params);
         }
     };
 }

@@ -1,10 +1,11 @@
 import { useContext, useRef, useState } from 'react';
-import { Grid2, MenuItem, TextField, Typography } from '@mui/material';
+import { capitalize, Grid2, MenuItem, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { UserContext } from '@src/App';
 import { fields } from '@src/constants';
 import { Question } from '@src/types';
 import { useAPIService } from '@src/services';
+import { parseName } from '@src/components/utils';
 
 export type PropTypes = {
     currentUrl?: string
@@ -107,7 +108,7 @@ export function AddQuestion(props: PropTypes) {
                 id={field.name}
                 name={field.name}
                 select
-                label={capitalizeFirst(field.name)}
+                label={capitalize(field.name)}
                 value={state[field.name]}
                 onChange={handleChange}
                 fullWidth
@@ -115,11 +116,11 @@ export function AddQuestion(props: PropTypes) {
                 size="small"
                 disabled={loading}
             >
-                {field.options.map(option => (
+                {field.options.map(option =>
                     <MenuItem id={option} key={option} value={option}>
                         {option}
                     </MenuItem>
-                ))}
+                )}
             </TextField>
         </Grid2>)}
         <Grid2 size={12}>
@@ -157,18 +158,4 @@ export function AddQuestion(props: PropTypes) {
             </LoadingButton>
         </Grid2>
     </Grid2>
-}
-
-const parseName = (url: URL): string => {
-    let name;
-    if (url.hostname === "leetcode.com") {
-        name = url.pathname.substring(10);
-        return (name[0].toUpperCase() + name.substring(1, name.length - 13)).replaceAll('-', ' ');
-    } else {
-        return '';
-    }
-}
-
-function capitalizeFirst(str: string): string {
-    return str[0].toUpperCase() + str.substring(1);
 }

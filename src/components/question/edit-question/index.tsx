@@ -1,6 +1,7 @@
-import { Grid2, MenuItem, TextField, Typography } from "@mui/material";
+import { capitalize, Grid2, IconButton, MenuItem, TextField, Typography } from "@mui/material";
+import { DeleteForever } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { categories, difficulties, statuses } from "@src/constants";
+import { fields } from "@src/constants";
 import { useAPIService } from "@src/services";
 import { Question } from "@src/types";
 import { useState } from "react";
@@ -9,28 +10,19 @@ import { PropTypes } from "../add-question";
 export function EditQuestion({ existingQuestion }: PropTypes) {
     console.log(existingQuestion);
     const { updateQuestion } = useAPIService();
-    const [state,] = useState<Question>(existingQuestion);
-    // const [loadingDelete, setLoadingDelete] = useState(false);
-    // const [loadingStatus, setLoadingStatus] = useState(false);
-    // const [loadingDifficulty, setLoadingDifficulty] = useState<boolean>(false);
+    const [state, setState] = useState<Question>(existingQuestion);
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function handleChange(e) {
-        console.log('Event', e);
-        updateQuestion({});
-        // if (e.target.name === 'status') {
-        //     setLoadingStatus(true);
-        // } else {
-        //     setLoadingDifficulty(true);
-        // }
+        console.dir(e.target);
+        setLoading(true);
+        const result = await updateQuestion(state.id, e.target.name, e.target.value);
+        if (result) setState({ ...state, [e.target.name]: e.target.value });
+        setLoading(false);
+    }
 
-        // const result = await updateQuestion(state.id, e.target.name, e.target.value);
-        // if (result) setState({ ...state, [e.target.name]: e.target.value });
-
-        // if (e.target.name === 'status') {
-        //     setLoadingStatus(false);
-        // } else {
-        //     setLoadingDifficulty(false);
-        // }
+    async function handleDelete() {
+        console.log('Delete');
     }
 
     function handleSubmit() {
@@ -38,68 +30,43 @@ export function EditQuestion({ existingQuestion }: PropTypes) {
     }
 
     return <Grid2 container spacing={2}>
-        <Grid2 size={12}>
+        <Grid2 size={12} container alignItems="center" justifyContent="space-between">
             <Typography variant="h6">{state.name}</Typography>
+            <IconButton disabled={false} color='error' onClick={handleDelete}>
+                <DeleteForever />
+            </IconButton>
         </Grid2>
-        <Grid2 size={4}>
-            <TextField
-                select
-                fullWidth
-                size="small"
-                id="difficulty"
-                label="Difficulty"
-                defaultValue={state.difficulty}
-                onChange={handleChange}
-            >
-                {difficulties.map(difficulty =>
-                    <MenuItem key={difficulty} value={difficulty}>
-                        {difficulty}
-                    </MenuItem>)}
-            </TextField>
-        </Grid2>
-        <Grid2 size={4}>
-            <TextField
-                select
-                fullWidth
-                size="small"
-                id="status"
-                label="Status"
-                defaultValue={state.status}
-                onChange={handleChange}
-            >
-                {statuses.map(status =>
-                    <MenuItem key={status} value={status}>
-                        {status}
-                    </MenuItem>)}
-            </TextField>
-        </Grid2>
-        <Grid2 size={4}>
-            <TextField
-                select
-                fullWidth
-                id="category"
-                label="Category"
-                size="small"
-                defaultValue={state.category}
-                onChange={handleChange}>
-                {categories.map(category =>
-                    <MenuItem key={category} value={category}>
-                        {category}
-                    </MenuItem>)}
-            </TextField>
-        </Grid2>
+        {fields.map(field =>
+            <Grid2 size={4}>
+                <TextField
+                    select
+                    fullWidth
+                    id={field.name}
+                    name={field.name}
+                    label={capitalize(field.name)}
+                    size="small"
+                    value={state[field.name]}
+                    onChange={handleChange}
+                    disabled={loading}
+                >
+                    {field.options.map(option =>
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>)}
+                </TextField>
+            </Grid2>
+        )}
         <Grid2 size={12}>
             <TextField
                 id="notes"
                 name="notes"
                 label="Notes (Optional)"
-                minRows={7}
+                minRows={6}
                 multiline
                 value={state.notes}
-                // onChange={handleChange}
+                onChange={handleChange}
                 fullWidth
-            // size="small"
-            // disabled={loading}
+                disabled={loading}
             />
         </Grid2>
         <Grid2 container size={12} justifyContent="flex-end">
