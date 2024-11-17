@@ -4,6 +4,7 @@ import { Header } from './components/header';
 import { User } from './types';
 import { Footer } from './components/footer';
 import { QuestionSection } from './components/question';
+import { Toaster } from 'react-hot-toast';
 
 export const UserContext = createContext<User>(null)
 
@@ -36,6 +37,7 @@ export default function App() {
         <Header user={user} />
         <QuestionSection currentUrl={currentUrl} />
       </>}
+      <Toaster />
       <Footer />
     </UserContext.Provider>
   )

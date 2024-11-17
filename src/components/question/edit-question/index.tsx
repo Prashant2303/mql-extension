@@ -15,10 +15,14 @@ export function EditQuestion({ existingQuestion }: PropTypes) {
 
     async function handleChange(e) {
         console.dir(e.target);
-        setLoading(true);
-        const result = await updateQuestion(state.id, e.target.name, e.target.value);
-        if (result) setState({ ...state, [e.target.name]: e.target.value });
-        setLoading(false);
+        if (e.target.name === "notes") {
+            setState({ ...state, notes: e.target.value });
+        } else {
+            setLoading(true);
+            const result = await updateQuestion(state.id, e.target.name, e.target.value);
+            if (result) setState({ ...state, [e.target.name]: e.target.value });
+            setLoading(false);
+        }
     }
 
     async function handleDelete() {
@@ -32,7 +36,7 @@ export function EditQuestion({ existingQuestion }: PropTypes) {
     return <Grid2 container spacing={2}>
         <Grid2 size={12} container alignItems="center" justifyContent="space-between">
             <Typography variant="h6">{state.name}</Typography>
-            <IconButton disabled={false} color='error' onClick={handleDelete}>
+            <IconButton disabled={false} color='error' title="Delete" onClick={handleDelete}>
                 <DeleteForever />
             </IconButton>
         </Grid2>
@@ -76,6 +80,7 @@ export function EditQuestion({ existingQuestion }: PropTypes) {
                 disableElevation
                 type="submit"
                 onClick={handleSubmit}
+                disabled={existingQuestion.notes == state.notes || loading}
             >
                 Save
             </LoadingButton>
