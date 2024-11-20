@@ -17,7 +17,7 @@ export default function App() {
     if (userData) {
       setUser(userData);
     } else {
-      window.open('http://localhost:8080', '_blank').focus();
+      window.open('http://localhost:3000/signin', '_blank').focus();
     }
   }
 

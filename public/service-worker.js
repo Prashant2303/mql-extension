@@ -1,14 +1,36 @@
-chrome.runtime.onMessageExternal.addListener(
-    function (request, sender, sendResponse) {
-        console.log('In sw receiver', request, sender);
+chrome.runtime.onMessageExternal.addListener(async (request, sender, sendResponse) => {
+    console.log('In sw receiver', request, sender);
 
-        const allowedWebsites = ["http://127.0.0.1:5500/index.html", "http://localhost:3000/signin"]
-        if (sender.url && allowedWebsites.includes(sender.url)) {
-            console.log('Store the token', request.userData);
-            const { userData } = request;
-            chrome.storage.local.set({ userData }).then(() => {
-                console.log("Value is set");
-                sendResponse(userData);
-            });
+    const allowedWebsites = ["http://localhost:3000", "https://my-question-list.vercel.app"]
+
+    const { origin } = new URL(sender.url);
+
+    if (sender.url && allowedWebsites.includes(origin)) {
+        const { action, userData } = request;
+        switch (action) {
+            case "LOGIN": {
+                await chrome.storage.local.set({ userData });
+                const msg = "User logged in extension";
+                console.log(msg);
+                sendResponse(msg);
+                break;
+            }
+            case "LOGOUT": {
+                await chrome.storage.local.clear();
+                const msg = "User logged out of extension";
+                console.log(msg);
+                sendResponse(msg);
+                break;
+            }
+            case "UPDATE": {
+                await chrome.storage.local.set({ userData });
+                const msg = "User updated in extension";
+                console.log(msg);
+                sendResponse(msg);
+                break;
+            }
+            default:
+                break;
         }
-    });
+    }
+});

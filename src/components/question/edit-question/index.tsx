@@ -1,5 +1,5 @@
 import { capitalize, Grid2, IconButton, MenuItem, TextField, Typography } from "@mui/material";
-import { DeleteForever } from "@mui/icons-material";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { LoadingButton } from "@mui/lab";
 import { fields } from "@src/constants";
 import { useAPIService } from "@src/services";
