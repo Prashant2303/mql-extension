@@ -16,7 +16,6 @@ export function EditQuestion({ existingQuestion, setExistingQuestion }: PropType
     const [open, setOpen] = useState<boolean>(false);
 
     async function handleChange(e) {
-        console.dir(e.target);
         if (e.target.name === "notes") {
             setState({ ...state, notes: e.target.value });
         } else {

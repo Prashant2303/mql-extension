@@ -3,16 +3,16 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { User } from '../../types';
+import { User } from '@src/types';
+import { APP_URL } from '@src/constants';
 
 export function Header({ user }: { user: User }) {
-  console.log('USER', user);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar className='header' position="static">
         <Toolbar className='toolbar'>
-          <a href='http://localhost:3000/' target='_blank'>
+          <a href={APP_URL} target='_blank'>
             <Typography variant="h6" component="div">
               MyQuestionList
             </Typography>

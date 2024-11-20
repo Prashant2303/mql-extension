@@ -16,3 +16,5 @@ export const fields = [
         options: ['Array', 'Linked List', 'Binary Tree', 'Binary Search Tree', 'Tree', 'Heap', 'Stack', 'Matrix', 'String', 'Queue', 'Graph', 'Trie', 'Others']
     }
 ]
+
+export const APP_URL = 'https://my-question-list.vercel.app/';

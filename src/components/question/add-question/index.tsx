@@ -38,7 +38,6 @@ export function AddQuestion(props: PropTypes) {
     const [error, setError] = useState<string>('');
 
     function handleChange(e) {
-        console.dir(e.target);
         const field = e.target.name;
         const value = e.target.value;
 

@@ -23,7 +23,13 @@ export function useAPIService() {
                 }),
                 redirect: "follow"
             })
-            return await result.json();
+            const question = await result.json();
+            if (question) {
+                toast.success('Question exists');
+            } else {
+                toast.error("Question doesn't exist");
+            }
+            return question;
         },
         addQuestion: async (question: Question): Promise<Question> => {
             const response = await fetch(base_url + `/questions/${defaultList}`, {
@@ -33,7 +39,11 @@ export function useAPIService() {
             });
 
             const data = await response.json();
-            console.log('Data', data);
+            if (question) {
+                toast.success('Question added succesfully');
+            } else {
+                toast.error('Something went wrong');
+            }
             return data;
         },
         updateQuestion: async (questionId, field, value): Promise<boolean> => {
