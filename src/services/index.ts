@@ -4,8 +4,8 @@ import { UserContext } from "../App";
 import toast from 'react-hot-toast';
 
 export function useAPIService() {
-    // const base_url = 'https://mql.onrender.com/api';
-    const base_url = 'http://localhost:3001/api';
+    const base_url = 'https://mql.onrender.com/api';
+
     const { defaultList, token } = useContext(UserContext);
 
     const myHeaders = new Headers();

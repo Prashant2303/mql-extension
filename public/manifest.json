@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "MQL Extensions",
-    "description": "Extension for MuQuestionList which lets users add the url of current page directly from the extensions bar.",
+    "description": "Extension for MyQuestionList which lets users add the url of current page directly from the extensions bar.",
     "version": "1.0",
     "action": {
         "default_popup": "index.html"
@@ -20,13 +20,8 @@
         "service_worker": "service-worker.js"
     },
     "externally_connectable": {
-        "ids": [
-            "*"
-        ],
         "matches": [
-            "https://*.google.com/*",
-            "http://127.0.0.1:5500/*",
-            "http://localhost:3000/*"
+            "https://my-question-list.vercel.app/*"
         ]
     }
 }
