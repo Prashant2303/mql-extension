@@ -16,7 +16,7 @@
 ## How to use the extension
 1. Pin the extension to the extensions toolbar for easy access.
 2. Click on the extension icon and it'll open the MQL panel.
-3. If the current url doesn't exist, it'll show the Add question panel. ![img](/blob/main/screenshots/question-doesn't-exist.png)
+3. If the current url doesn't exist, it'll show the Add question panel. ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-doesn't-exist.png)
 4. If the question exists, it'll show the edit question panel ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-exists.png)
 
 Now you can edit or delete the item from your list.
