@@ -19,7 +19,7 @@
 3. If the current url doesn't exist, it'll show the Add question panel. ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-doesn't-exist.png)
 4. If the question exists, it'll show the edit question panel ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-exists.png)
 
-Now you can edit or delete the item from your list.
+Now you can edit or delete the item from your extension itself.
 <br/>
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
