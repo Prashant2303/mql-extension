@@ -5,6 +5,7 @@ import { User } from './types';
 import { Footer } from './components/footer';
 import { QuestionSection } from './components/question';
 import { Toaster } from 'react-hot-toast';
+import { APP_URL } from './constants';
 
 export const UserContext = createContext<User>(null)
 
@@ -17,7 +18,7 @@ export default function App() {
     if (userData) {
       setUser(userData);
     } else {
-      window.open('http://localhost:3000/signin', '_blank').focus();
+      window.open(`${APP_URL}/signin`, '_blank').focus();
     }
   }
 

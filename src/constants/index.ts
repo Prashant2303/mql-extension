@@ -17,4 +17,4 @@ export const fields = [
     }
 ]
 
-export const APP_URL = 'https://my-question-list.vercel.app/';
+export const APP_URL = 'https://my-question-list.vercel.app';

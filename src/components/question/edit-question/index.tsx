@@ -8,6 +8,11 @@ import { useState } from "react";
 import { PropTypes } from "../add-question";
 import { DeleteModal } from "./delete-modal";
 
+function getDate(ISODate: string): string {
+    const date = new Date(ISODate);
+    return `Added: ${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+}
+
 export function EditQuestion({ existingQuestion, setExistingQuestion }: PropTypes) {
 
     const { updateQuestion } = useAPIService();
@@ -78,7 +83,8 @@ export function EditQuestion({ existingQuestion, setExistingQuestion }: PropType
                 disabled={loading}
             />
         </Grid2>
-        <Grid2 container size={12} justifyContent="flex-end">
+        <Grid2 container size={12} justifyContent="space-between" alignItems="center">
+            <Typography variant="caption">{getDate(existingQuestion.date)}</Typography>
             <LoadingButton
                 loading={loading}
                 variant="contained"
