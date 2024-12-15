@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# MQL Extension
 
-Currently, two official plugins are available:
+**A companion extension to MyQuestionList application which lets you add current tab url to the list using the extension itself.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## PREREQUISITES
+1. An account on **MyQuestionList**
+2. A chromium based browser e.g **Google Chrome**, **Miscrosoft Edge**, etc
+3. Download the extension from [here](https://github.com/Prashant2303/mql-extension/blob/main/tools/Extension.zip)
 
-## Expanding the ESLint configuration
+## How to install the extension in your Browser 
+1. After downloading the extension, extract it. It should contain a folder named "dist".
+2. Open the browser of your choice and go the extensions tab, turn on "Developer mode".
+3. Click on "Load unpacked", and select the "dist" folder (from step 1).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to use the extension
+1. Pin the extension to the extensions toolbar for easy access.
+2. Click on the extension icon and it'll open the MQL panel.
+3. If the current url doesn't exist, it'll show the Add question panel. ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-doesn't-exist.png)
+4. If the question exists, it'll show the edit question panel ![img](https://github.com/Prashant2303/mql-extension/blob/main/screenshots/question-exists.png)
 
-- Configure the top-level `parserOptions` property like this:
+Now you can edit or delete the item from your list.
+<br/>
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
