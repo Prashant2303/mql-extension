@@ -6,7 +6,7 @@
 ## PREREQUISITES
 1. An account on **MyQuestionList**
 2. A chromium based browser e.g **Google Chrome**, **Miscrosoft Edge**, etc
-3. Download the extension from [here](https://github.com/Prashant2303/mql-extension/blob/main/tools/Extension.zip)
+3. Download the extension from [here](https://chromewebstore.google.com/detail/mql-extensions/khgcpljhlkiljndnfbijcjdkolhgocic)
 
 ## How to install the extension in your Browser 
 1. After downloading the extension, extract it. It should contain a folder named "dist".
