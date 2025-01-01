@@ -3,7 +3,7 @@
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5V74/ttI1v3HN0Bn4vLtTfYEsjgdHpJB9I446NJbiulq1H0UjiRJYUxVj60B90BmGlLCrKAAOeU5XDrVqwcsoUsYb5cid5YjYhGq6rKTRMmz/N2XwZuLV2wTff9qaUk755COH3dHV6PJjxHqCpc+vgPfSk3RdgQ1HJ5P/vmEDaOrXKWx63CBEp4zRrnh3iNTkFvw84l2P+8kkfn974mWR3qRuQG1K2UvChs839thThZ1JM7Kf5vNQNS7mrk8CZB+8qbkufoUy5a6trQkhmK56rfvNmjcJ9NcvCwiId5VpFiivl6P7CQ4b7U9PGiP2f9YnYTjHZcs6pbhTzLP+beLQIDAQAB",
     "name": "MQL Extensions",
     "description": "Extension for MyQuestionList which lets users add the url of current page directly from the extensions bar.",
-    "version": "1.0",
+    "version": "1.0.1",
     "action": {
         "default_popup": "index.html"
     },
